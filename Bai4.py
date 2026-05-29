@@ -9,6 +9,7 @@
 # Các câu thông báo lỗi hoặc thông báo thành công cho từng trường hợp nghiệp vụ.
 # Khởi tạo danh sách sản phẩm ban đầu của cửa hàng thời trang Yody
 
+# Khởi tạo danh sách sản phẩm ban đầu của cửa hàng thời trang Yody
 product_list = [
     {
         "product_id": "SP001",
@@ -34,9 +35,8 @@ product_list = [
 ]
 
 option = 0
-found = False
 
-while option != 5:
+while option != '5':
     print()
     print('===== HỆ THỐNG VẬN HÀNH CỬA HÀNG YODY =====')
     print('1. Hiển thị danh sách sản phẩm và cảnh báo tồn kho')
@@ -45,12 +45,12 @@ while option != 5:
     print('4. Xem báo cáo doanh thu')
     print('5. Thoát chương trình')
     
-    option = int(input('Nhập lựa chọn của bạn (1-5): '))
-        
+    option = input('Nhập lựa chọn của bạn (1-5): ').strip()
+    
     match option:
-        case 1:
+        case '1':
             print()
-            if product_list == []:
+            if not product_list:
                 print('Danh sách sản phẩm hiện đang trống.')
             else:
                 print('Danh sách sản phẩm hiện tại: ')
@@ -63,11 +63,11 @@ while option != 5:
                         status = "Còn hàng"
 
                     print(f'{i}. Mã SP: {item["product_id"]} | Tên: {item["product_name"]} | '
-                          f'Giá: {item["price"]} | Tồn kho: {item["quantity"]} | '
+                          f'Giá: {item["price"]:,} VND | Tồn kho: {item["quantity"]} | '
                           f'Đã bán: {item["sold"]} | Trạng thái: {status}')
             print()
             
-        case 2:
+        case '2':
             print()
             found = False 
             input_id_search = input('Nhập mã sản phẩm khách muốn mua: ').strip().upper()
@@ -84,17 +84,17 @@ while option != 5:
                         if input_quantity > item['quantity']:
                             print('Số lượng trong kho không đủ để bán')
                         else:
-                            item['quantity'] -= sell_qty
-                            item['sold'] += sell_qty
-                            total_pay = item['price'] * sell_qty
-                            print(f'Bán hàng thành công! Số tiền khách cần thanh toán: {total_pay} VND')
+                            item['quantity'] -= input_quantity
+                            item['sold'] += input_quantity
+                            total_pay = item['price'] * input_quantity
+                            print(f'Bán hàng thành công! Số tiền khách cần thanh toán: {total_pay:,} VND')
                     break 
 
-            if found == False:
+            if not found:
                 print('Không tìm thấy sản phẩm cần bán')
             print()
             
-        case 3:
+        case '3':
             print()
             found = False 
             input_id_search = input('Nhập mã sản phẩm cần nhập thêm: ').strip().upper()
@@ -112,11 +112,11 @@ while option != 5:
                         print(f'Nhập thêm hàng thành công! Tồn kho mới của {item["product_name"]} là: {item["quantity"]}')
                     break 
                     
-            if found == False:
+            if not found:
                 print('Không tìm thấy sản phẩm cần Nhập kho')
             print()
             
-        case 4:
+        case '4':
             print()
             total_sold_units = sum(item['sold'] for item in product_list)
         
@@ -129,20 +129,21 @@ while option != 5:
                 best_seller_name = "" 
                 
                 for i, item in enumerate(product_list, start = 1):
+                    item_revenue = item['price'] * item['sold']
                     total_revenue += item_revenue 
                     
-                    print(f'{i}. {item["product_name"]} | Đã bán: {item["sold"]} | Doanh thu: {item_revenue}')
+                    print(f'{i}. {item["product_name"]} | Đã bán: {item["sold"]} | Doanh thu: {item_revenue:,} VND')
                     
                     if item['sold'] > max_sold:
                         max_sold = item['sold'] 
                         best_seller_name = item['product_name'] 
                         
-                print(f'\nTổng doanh thu: {total_revenue}')
-                print(f'Sản phẩm bán chạy nhất: {best_seller_name}')
+                print(f'\nTổng doanh thu: {total_revenue:,} VND')
+                print(f'Sản phẩm bán chạy nhất: {best_seller_name} ({max_sold} sản phẩm)')
             print()
             
-        case 5:
-            print('Thoát chương trình.')
+        case '5':
+            print('Thoát chương trình. Tạm biệt!')
             
         case _:
             print('"Lựa chọn không hợp lệ", vui lòng nhập lại!')
