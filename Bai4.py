@@ -45,7 +45,7 @@ while option != 5:
     print('4. Xem báo cáo doanh thu')
     print('5. Thoát chương trình')
     
-    input_option = int(input('Nhập lựa chọn của bạn (1-5): '))
+    option = int(input('Nhập lựa chọn của bạn (1-5): '))
         
     match option:
         case 1:
